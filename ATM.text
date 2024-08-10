@@ -1,0 +1,78 @@
+import java.util.Scanner;
+
+class Account {
+    public long balance ;
+
+    public Account(long balance) {
+        this.balance = balance;
+    }
+}
+
+class ATM {
+    private final Account account;
+    private final long dailyWithdrawalLimit;
+    public ATM() {
+        account = new Account(0);
+        dailyWithdrawalLimit = 25_000;
+    }
+
+    public void deposit(long amount) {
+        account.balance += amount;
+    }
+
+    public void withdraw(long amount) {
+        if(account.balance < amount) {
+            System.out.println("Insufficient funds");
+            return;
+        }
+
+        if(amount > dailyWithdrawalLimit) {
+            System.out.println("Exceeded daily withdrawal limit of " + dailyWithdrawalLimit);
+            return;
+        }
+
+        account.balance -= amount;
+    }
+
+    public void printBalance() {
+        System.out.println("Your final account balance is " + account.balance + "\n");
+    }
+
+}
+
+class Main {
+    public static void main(String[] args) {
+        ATM atm = new ATM();
+        Scanner scanner = new Scanner(System.in);
+
+        do {
+            System.out.println("Press 1 to deposit amount");
+            System.out.println("Press 2 to withdraw amount");
+            System.out.println("Press 3 to print balance");
+            System.out.println("Press any key to exit");
+
+            char choice = scanner.next().charAt(0);
+
+            switch(choice) {
+                case '1' -> {
+                    System.out.println("Enter amount to deposit");
+                    long amount = scanner.nextLong();
+                    atm.deposit(amount);
+                }
+                case '2' -> {
+                    System.out.println("Enter amount to withdraw");
+                    long amount = scanner.nextLong();
+                    atm.withdraw(amount);
+                }
+                case '3' -> {
+                    atm.printBalance();
+                }
+                default -> {
+                    System.out.println("Thank you for using our ATM service");
+                    System.exit(0);
+                }
+            }
+        } while(true);
+
+    }
+}
